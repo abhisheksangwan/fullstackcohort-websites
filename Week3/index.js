@@ -92,20 +92,29 @@ app.get("/users/courses", userAuthentication, (req, res) => {
   res.send({ courses: COURSES.filter((c) => c.published) });
 });
 
-app.post("/users/courses/:courseId", (req, res) => {
+app.post("/users/courses/:courseId", userAuthentication, (req, res) => {
   // logic to purchase a course
   const courseId = parseInt(req.params.courseId);
-  const course = COURSES.find(a => a.id === courseId && a.published);
+  const course = COURSES.find((a) => a.id === courseId && a.published);
   if (course) {
     req.user.purchasedCourses.push(courseId);
-    req.json({ message: "Course purchased successfully" });
+    res.json({ message: "Course purchased successfully" });
   } else {
     res.status(411).send({ message: "Course not found or unavailable" });
   }
 });
 
-app.get("/users/purchasedCourses", (req, res) => {
+app.get("/users/purchasedCourses", userAuthentication, (req, res) => {
   // logic to view purchased courses
+  // const purchasedCourses = COURSES.filter(c => req.user.purchasedCourses.includes(c.id));
+  var purchasedCoursesIds = req.user.purchasedCourses;
+  var purchasedCourses = [];
+  for (let i = 0; i < COURSES.length; i++) {
+    if (purchasedCoursesIds.indexOf(COURSES[i].id) !== -1) {
+      purchasedCourses.push(COURSES[i]);
+    }
+  }
+  res.json({ purchasedCourses });
 });
 
 app.listen(3000, () => {
