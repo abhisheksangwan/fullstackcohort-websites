@@ -6,6 +6,7 @@ import { useState } from "react";
 function AddCourse() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [image, setImage] = useState("");
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <Card
@@ -19,6 +20,15 @@ function AddCourse() {
           backgroundColor: "White",
         }}
       >
+        <TextField
+          onChange={(e) => {
+            setImage(e.target.value);
+          }}
+          fullWidth={true}
+          label="Image Link"
+          varient="outlined"
+          style={{ marginTop: "20px" }}
+        />
         <TextField
           onChange={(e) => {
             setTitle(e.target.value);
@@ -39,12 +49,16 @@ function AddCourse() {
         <Button
           type="submit"
           variant="contained"
+          style={{
+            marginTop: "15px",
+          }}
           onClick={() => {
             fetch("http://localhost:3000/admin/courses", {
               method: "POST",
               body: JSON.stringify({
                 title: title,
                 description: description,
+                image:image,
                 published: true,
               }),
               headers: {
@@ -55,9 +69,8 @@ function AddCourse() {
               .then((res) => {
                 return res.json();
               })
-              .then((data) => {
-                localStorage.setItem("token", data.token);
-                console.log(data);
+              .then(() => {
+                alert("Course added !");
               });
           }}
         >

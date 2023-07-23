@@ -79,6 +79,11 @@ const authenticateJWTUsers = (req, res, next) => {
 // };
 // Admin routes
 
+app.get("/admin/me", authenticateJWTAdmin, (req, res) => {
+  res.json({
+    username :req.user.username
+  })
+})
 app.post("/admin/signup", (req, res) => {
   // logic to sign up admin
   const admin = req.body;
@@ -94,7 +99,7 @@ app.post("/admin/signup", (req, res) => {
 
 app.post("/admin/login", (req, res) => {
   //   logic to log in admin
-  const { username, password } = req.headers;
+  const { username, password } = req.body;
   const admin = ADMINS.find(
     (a) => a.username === username && a.password === password
   );
