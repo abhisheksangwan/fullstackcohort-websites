@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import { useState } from "react";
@@ -58,7 +58,7 @@ function AddCourse() {
               body: JSON.stringify({
                 title: title,
                 description: description,
-                image:image,
+                image: image,
                 published: true,
               }),
               headers: {

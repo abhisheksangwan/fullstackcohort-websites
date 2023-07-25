@@ -73,8 +73,8 @@ function Signup() {
               fetch("http://localhost:3000/admin/signup", {
                 method: "POST",
                 body: JSON.stringify({
-                  username : email,
-                  password :password,
+                  username: email,
+                  password: password,
                 }),
                 headers: {
                   "Content-type": "application/json",
@@ -85,7 +85,6 @@ function Signup() {
                 })
                 .then((data) => {
                   localStorage.setItem("token", data.token);
-                  
                 });
             }}
           >
