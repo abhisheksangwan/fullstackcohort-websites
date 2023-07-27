@@ -36,7 +36,13 @@ function Appbar() {
           }}
         >
           <div>
-            <Typography variant={"h6"} style={{ marginLeft: "10px" }}>
+            <Typography
+              variant={"h6"}
+              style={{ marginLeft: "10px" }}
+              onClick={() => {
+                window.location = "/courses";
+              }}
+            >
               Coursera
             </Typography>
           </div>
@@ -49,7 +55,7 @@ function Appbar() {
             <Button
               variant={"contained"}
               onClick={() => {
-              window.location = "/";
+                window.location = "/profile";
               }}
               style={{ marginRight: "15px" }}
             >
@@ -58,8 +64,17 @@ function Appbar() {
             <Button
               variant={"contained"}
               onClick={() => {
+                window.location = "/courses";
+              }}
+              style={{ marginRight: "15px" }}
+            >
+              Courses
+            </Button>
+            <Button
+              variant={"contained"}
+              onClick={() => {
                 localStorage.setItem("token", null);
-                window.location = "/"; 
+                window.location = "/signup";
               }}
             >
               Log out

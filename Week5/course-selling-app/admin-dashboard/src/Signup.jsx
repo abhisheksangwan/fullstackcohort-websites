@@ -2,14 +2,12 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Card from "@mui/material/Card";
 import { Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const Navigate = useNavigate();
   return (
     <div
       style={{
@@ -94,7 +92,7 @@ function Signup() {
             type="submit"
             variant="contained"
             onClick={() => {
-              Navigate("/login");
+              window.location = "/login";
             }}
           >
             Sign in

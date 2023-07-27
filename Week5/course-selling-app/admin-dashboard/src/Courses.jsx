@@ -1,5 +1,6 @@
 import { Card, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types"; // Import PropTypes for prop validation
 
 function Courses() {
   const [courses, setCourses] = useState([]);
@@ -24,13 +25,23 @@ function Courses() {
       style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
     >
       {courses.map((course) => {
-        return <Course course={course} />;
+        return <Course key={course.id} course={course} />; // Add "key" prop
       })}
     </div>
   );
 }
 
 export function Course(props) {
+  // Add prop validation using PropTypes
+  Course.propTypes = {
+    course: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired,
+    }).isRequired,
+  };
+
   return (
     <Card
       style={{
@@ -45,7 +56,11 @@ export function Course(props) {
       <Typography textAlign={"center"} variant="subtitle1">
         {props.course.description}
       </Typography>
-      <img src={props.course.imageLink} style={{ width: 300 }}></img>
+      <img
+        src={props.course.image}
+        style={{ width: 300 }}
+        alt={props.course.title}
+      />
     </Card>
   );
 }

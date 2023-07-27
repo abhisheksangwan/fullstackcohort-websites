@@ -4,16 +4,18 @@ import TextField from "@mui/material/TextField";
 import { Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
+import PropTypes from "prop-types";
 import {
   atom,
-  useRecoilState,
   useSetRecoilState,
   useRecoilValue,
+  useRecoilState,
 } from "recoil";
 
-const textState = atom({
+// Define coursesState atom
+const coursesState = atom({
   key: "coursesState",
-  default: "",
+  default: [],
 });
 
 function Course() {
@@ -33,8 +35,7 @@ function Course() {
       .then((data) => {
         setCourses(data.courses);
       });
-  }, []);
-
+  }, [setCourses]); 
 
   return (
     <div>
@@ -43,14 +44,13 @@ function Course() {
     </div>
   );
 }
- 
-function UpdateCard(props) {
-  const [title, setTitle] = useRecoilState("");
+
+function UpdateCard({ courseId }) {
+  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
-  const course = props.course;
   const [courses, setCourses] = useRecoilState(coursesState);
-  
+
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <Card
@@ -98,7 +98,7 @@ function UpdateCard(props) {
             marginTop: "15px",
           }}
           onClick={() => {
-            fetch("http://localhost:3000/admin/courses/" + props.courseId, {
+            fetch("http://localhost:3000/admin/courses/" + courseId, {
               method: "PUT",
               body: JSON.stringify({
                 title: title,
@@ -116,19 +116,19 @@ function UpdateCard(props) {
               })
               .then(() => {
                 let updatedCourses = [];
-                for (let i = 0; i < courses.length; i++){
-                  if (courses[i].id == props.courseId) {
+                for (let i = 0; i < courses.length; i++) {
+                  if (courses[i].id === parseInt(courseId)) {
                     updatedCourses.push({
-                      id: props.courseId,
+                      id: courseId,
                       title: title,
                       description: description,
-                      image:image
-                    })
+                      image: image,
+                    });
                   } else {
                     updatedCourses.push(courses[i]);
                   }
-                  setCourses(updatedCourses);
                 }
+                setCourses(updatedCourses);
               });
           }}
         >
@@ -139,17 +139,25 @@ function UpdateCard(props) {
   );
 }
 
-function CourseCard(props) {
-  const course = useRecoilValue(coursesState); 
-    for (let i = 0; i < courses.length; i++) {
-      if (courses[i].id === courseId) {
-        course = courses[i];
-      }
-    }
+UpdateCard.propTypes = {
+  courseId: PropTypes.string.isRequired,
+};
 
-    if (!course) {
-      return <div>Loading...</div>;
+function CourseCard({ courseId }) {
+  const courses = useRecoilValue(coursesState);
+  let course = null;
+
+  for (let i = 0; i < courses.length; i++) {
+    if (courses[i].id === parseInt(courseId)) {
+      course = courses[i];
+      break;
     }
+  }
+
+  if (!course) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       <Card
@@ -167,7 +175,7 @@ function CourseCard(props) {
         >
           <img
             src={course.image}
-            alt="image"
+            alt="course"
             style={{
               width: "300px",
             }}
@@ -196,5 +204,8 @@ function CourseCard(props) {
   );
 }
 
-export default Course;
+CourseCard.propTypes = {
+  courseId: PropTypes.string.isRequired,
+};
 
+export default Course;
