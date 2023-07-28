@@ -7,6 +7,8 @@ function Profile() {
       style={{
         display: "flex",
         justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
       }}
     >
       <Card
@@ -48,7 +50,7 @@ function Profile() {
             margin: "10px",
           }}
         >
-          Email: 
+          Email:
         </Typography>
         <Typography
           variant="subtitle1"

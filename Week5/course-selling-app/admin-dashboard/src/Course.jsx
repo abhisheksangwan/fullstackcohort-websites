@@ -15,7 +15,7 @@ import {
 // Define coursesState atom
 const coursesState = atom({
   key: "coursesState",
-  default: [],
+  default: "",
 });
 
 function Course() {
@@ -36,14 +36,82 @@ function Course() {
         setCourses(data.courses);
       });
   }, [setCourses]); 
-
+ 
   return (
-    <div>
+    <div style={{ display: "flex", justifyContent: "center", alignItems:"center", height:"100vh"}}>
       <CourseCard courseId={courseId} />
       <UpdateCard courseId={courseId} />
     </div>
   );
 }
+
+
+
+function CourseCard({ courseId }) {
+  const courses = useRecoilValue(coursesState);
+  let course = null;
+
+  for (let i = 0; i < courses.length; i++) {
+    if (courses[i].id === parseInt(courseId)) {
+      course = courses[i];
+      break;
+    }
+  }
+
+  if (!course) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div>
+      <Card
+        style={{
+          border: "1px solid black",
+          margin: "10px",
+          width: "340px",
+          height: "320px",
+        }}
+      >
+        <Typography
+          style={{
+            overflowWrap: "wrap",
+          }}
+        >
+          <img
+            src={course.image}
+            alt="course"
+            style={{
+              width: "340px",
+            }}
+          />
+        </Typography>
+        <Typography
+          variant="h6"
+          style={{
+            overflowWrap: "wrap",
+          }}
+          textAlign={"center"}
+        >
+          {course.title}
+        </Typography>
+        <Typography
+          variant="subtitle1"
+          style={{
+            overflowWrap: "wrap",
+            margin: "10px",
+          }}
+        >
+          {course.description}
+        </Typography>
+      </Card>
+    </div>
+  );
+}
+
+CourseCard.propTypes = {
+  courseId: PropTypes.string.isRequired,
+};
+
 
 function UpdateCard({ courseId }) {
   const [title, setTitle] = useState("");
@@ -52,19 +120,19 @@ function UpdateCard({ courseId }) {
   const [courses, setCourses] = useRecoilState(coursesState);
 
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
+    <div>
       <Card
         variant="outlined"
         style={{
           border: "2px solid black",
           width: "340px",
-          height: "300px",
+          height: "320px",
           padding: "15px",
-          marginTop: "40px",
+          margin: "10px",
           backgroundColor: "White",
         }}
       >
-        <Typography variant="h5">Update Course Details</Typography>
+        <Typography variant="h6">Update Course Details</Typography>
         <TextField
           onChange={(e) => {
             setImage(e.target.value);
@@ -72,7 +140,7 @@ function UpdateCard({ courseId }) {
           fullWidth={true}
           label="Image Link"
           variant="outlined"
-          style={{ marginTop: "20px" }}
+          style={{ marginBlock: "6px" }}
         />
         <TextField
           onChange={(e) => {
@@ -81,6 +149,7 @@ function UpdateCard({ courseId }) {
           fullWidth={true}
           label="Title"
           variant="outlined"
+          style={{ marginBlock: "6px" }}
         />
         <TextField
           onChange={(e) => {
@@ -89,7 +158,7 @@ function UpdateCard({ courseId }) {
           fullWidth={true}
           label="Description"
           variant="outlined"
-          style={{ marginTop: "20px" }}
+          style={{ marginBlock: "6px" }}
         />
         <Button
           type="submit"
@@ -142,70 +211,4 @@ function UpdateCard({ courseId }) {
 UpdateCard.propTypes = {
   courseId: PropTypes.string.isRequired,
 };
-
-function CourseCard({ courseId }) {
-  const courses = useRecoilValue(coursesState);
-  let course = null;
-
-  for (let i = 0; i < courses.length; i++) {
-    if (courses[i].id === parseInt(courseId)) {
-      course = courses[i];
-      break;
-    }
-  }
-
-  if (!course) {
-    return <div>Loading...</div>;
-  }
-
-  return (
-    <div>
-      <Card
-        style={{
-          border: "1px solid black",
-          margin: "10px",
-          minHeight: "220px",
-          width: "300px",
-        }}
-      >
-        <Typography
-          style={{
-            overflowWrap: "wrap",
-          }}
-        >
-          <img
-            src={course.image}
-            alt="course"
-            style={{
-              width: "300px",
-            }}
-          />
-        </Typography>
-        <Typography
-          variant="h6"
-          style={{
-            overflowWrap: "wrap",
-          }}
-          textAlign={"center"}
-        >
-          {course.title}
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          style={{
-            overflowWrap: "wrap",
-            margin: "10px",
-          }}
-        >
-          {course.description}
-        </Typography>
-      </Card>
-    </div>
-  );
-}
-
-CourseCard.propTypes = {
-  courseId: PropTypes.string.isRequired,
-};
-
 export default Course;

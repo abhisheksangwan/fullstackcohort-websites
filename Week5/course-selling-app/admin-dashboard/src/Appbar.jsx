@@ -40,7 +40,7 @@ function Appbar() {
               variant={"h6"}
               style={{ marginLeft: "10px" }}
               onClick={() => {
-                window.location = "/courses";
+                window.location = "/login";
               }}
             >
               Coursera
@@ -55,7 +55,7 @@ function Appbar() {
             <Button
               variant={"contained"}
               onClick={() => {
-                window.location = "/profile";
+                window.location = "/userprofile";
               }}
               style={{ marginRight: "15px" }}
             >
@@ -69,6 +69,15 @@ function Appbar() {
               style={{ marginRight: "15px" }}
             >
               Courses
+            </Button>
+            <Button
+              variant={"contained"}
+              onClick={() => {
+                window.location = "/addcourse";
+              }}
+              style={{ marginRight: "15px" }}
+            >
+              Add Courses
             </Button>
             <Button
               variant={"contained"}
